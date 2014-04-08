@@ -11,6 +11,7 @@
  *
  * The string "tabName" has no signficance other than each pair needs a unique name.
  */
+require_once 'common.php';
 
 define('TITLES_INI_PATH', __DIR__ . '/titles.ini');
 define('DEFAULT_TITLE', 'Not found');
@@ -19,29 +20,7 @@ define('DEFAULT_TITLE', 'Not found');
 $titles = parse_ini_file(TITLES_INI_PATH);
 
 // We'll parse the ini file into a nicer format
-$settings = array();
-foreach ($titles as $key => $entry) {
-	// Take a key "tabName.keyName" and explode it
-	$keyParts = explode('.', $key);
-
-	// Only use this if it has only two parts
-	if (count($keyParts) == 2)
-	{
-		// This reads the tabName and the keyName
-		$tabNamePart = $keyParts[0];
-		$tabKeyPart = $keyParts[1];
-
-		// Only allow these keys
-		if (in_array($tabKeyPart, array('folder', 'title')))
-		{
-			if (!isset($settings[$tabNamePart]))
-			{
-				$settings[$tabNamePart] = array();
-			}
-			$settings[$tabNamePart][$tabKeyPart] = $entry;
-		}
-	}
-}
+$settings = formatSettings($titles);
 
 // Here's the working dir
 $pwd = $_SERVER['PWD'];
@@ -50,13 +29,10 @@ $pwd = $_SERVER['PWD'];
 $title = DEFAULT_TITLE;
 foreach ($settings as $tabName => $tabSettings)
 {
-	if (isset($tabSettings['folder']))
+	if (comparePwd($tabSettings, $pwd))
 	{
-		if ($tabSettings['folder'] == $pwd)
-		{
-			$title = $settings[$tabName]['title'];
-			break;
-		}
+		$title = $settings[$tabName]['title'];
+		break;
 	}
 }
 
