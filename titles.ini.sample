@@ -1,0 +1,12 @@
+# Enter your tab titles here
+#
+# Use the format:
+#
+# tabName.folder = (fully qualified folder)
+# tabName.title = (title name you want)
+#
+# Repeat for as many tabs as you have
+
+home.folder = /home/bob
+home.title = Home
+
