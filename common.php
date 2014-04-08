@@ -30,15 +30,37 @@ function formatSettings($titles) {
 
 function isPermittedKey($key)
 {
-	return in_array($key, array('folder', 'title', 'type',));
+	return in_array($key, array('folder', 'title', 'regexp',));
 }
 
+/**
+ * This does the comparison to see if the pwd matches the folder expression
+ * 
+ * @param array $tabSettings
+ * @param string $pwd
+ * @return boolean
+ */
 function comparePwd(array $tabSettings, $pwd)
 {
+	# Get some useful properties for this tab
 	$folder = isset($tabSettings['folder']) ?
 		$tabSettings['folder'] :
 		''
 	;
+	$regexp = isset($tabSettings['regexp']) ?
+		(bool) $tabSettings['regexp'] :
+		false
+	;
 
-	return $folder == $pwd;
+	if ($regexp)
+	{
+		# @todo We need to check for regexp validity before using
+		$result = (bool) preg_match($folder, $pwd);
+	}
+	else
+	{
+		$result = $folder == $pwd;
+	}
+
+	return $result;
 }
