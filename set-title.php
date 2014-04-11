@@ -20,7 +20,8 @@ define('DEFAULT_TITLE', 'Not found');
 $titles = parse_ini_file(TITLES_INI_PATH);
 
 // We'll parse the ini file into a nicer format
-$settings = formatSettings($titles);
+$SettingsReader = new TerminalTweak\SettingsReader();
+$settings = $SettingsReader->formatSettings($titles);
 
 // Here's the working dir
 $pwd = $_SERVER['PWD'];
@@ -29,7 +30,7 @@ $pwd = $_SERVER['PWD'];
 $title = DEFAULT_TITLE;
 foreach ($settings as $tabName => $tabSettings)
 {
-	if (comparePwd($tabSettings, $pwd))
+	if (TerminalTweak\comparePwd($tabSettings, $pwd))
 	{
 		$title = $settings[$tabName]['title'];
 		break;

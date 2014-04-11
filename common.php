@@ -1,31 +1,47 @@
 <?php
 
-function formatSettings($titles) {
-	$settings = array();
-	foreach ($titles as $key => $entry) {
-		// Take a key "tabName.keyName" and explode it
-		$keyParts = explode('.', $key);
+// @todo Some config check to ensure keys have not been replicated here would be nice
 
-		// Only use this if it has only two parts
-		if (count($keyParts) == 2)
-		{
-			// This reads the tabName and the keyName
-			$tabNamePart = $keyParts[0];
-			$tabKeyPart = $keyParts[1];
+namespace TerminalTweak;
 
-			// Only allow these keys
-			if (isPermittedKey($tabKeyPart))
+class SettingsReader
+{
+	protected $settings;
+
+	public function formatSettings($titles)
+	{
+		$this->settings = array();
+
+		foreach ($titles as $key => $entry) {
+			// Take a key "tabName.keyName" and explode it
+			$keyParts = explode('.', $key);
+
+			// Only use this if it has only two parts
+			if (count($keyParts) == 2)
 			{
-				if (!isset($settings[$tabNamePart]))
+				// This reads the tabName and the keyName
+				$tabNamePart = $keyParts[0];
+				$tabKeyPart = $keyParts[1];
+
+				// Only allow these keys
+				if (isPermittedKey($tabKeyPart))
 				{
-					$settings[$tabNamePart] = array();
+					if (!isset($this->settings[$tabNamePart]))
+					{
+						$this->settings[$tabNamePart] = array();
+					}
+					$this->setSetting($tabNamePart, $tabKeyPart, $entry);
 				}
-				$settings[$tabNamePart][$tabKeyPart] = $entry;
 			}
 		}
+
+		return $this->settings;
 	}
 
-	return $settings;
+	protected function setSetting($tabName, $keyName, $value)
+	{
+		$this->settings[$tabName][$keyName] = $value;
+	}
 }
 
 function isPermittedKey($key)
