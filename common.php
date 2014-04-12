@@ -7,6 +7,10 @@ namespace TerminalTweak;
 
 class SettingsReader
 {
+	const OPTION_DIR = 'folder';
+	const OPTION_TITLE = 'title';
+	const OPTION_REGEXP = 'regexp';
+
 	protected $settings;
 
 	public function formatSettings($titles)
@@ -56,7 +60,7 @@ class SettingsReader
 		{
 			if ($this->comparePwd($tabSettings, $pwd))
 			{
-				$title = $this->settings[$tabName]['title'];
+				$title = $this->settings[$tabName][self::OPTION_TITLE];
 				break;
 			}
 		}
@@ -74,12 +78,12 @@ class SettingsReader
 	protected function comparePwd(array $tabSettings, $pwd)
 	{
 		# Get some useful properties for this tab
-		$folder = isset($tabSettings['folder']) ?
-			$tabSettings['folder'] :
+		$folder = isset($tabSettings[self::OPTION_DIR]) ?
+			$tabSettings[self::OPTION_DIR] :
 			''
 		;
-		$regexp = isset($tabSettings['regexp']) ?
-			(bool) $tabSettings['regexp'] :
+		$regexp = isset($tabSettings[self::OPTION_REGEXP]) ?
+			(bool) $tabSettings[self::OPTION_REGEXP] :
 			false
 		;
 
@@ -115,24 +119,24 @@ class SettingsReader
 			}
 
 			// Check for missing folder parameter
-			if (!isset($tabSettings['folder']))
+			if (!isset($tabSettings[self::OPTION_DIR]))
 			{
 				$errors[$tabName][] = 'Missing folder parameter';
 			}
 
 			// Check for missing title parameter
-			if (!isset($tabSettings['title']))
+			if (!isset($tabSettings[self::OPTION_TITLE]))
 			{
 				$errors[$tabName][] = 'Missing title parameter';
 			}
 
 			// Check for folder existence, but not if it is a regexp
-			if (isset($tabSettings['folder']) && !isset($tabSettings['regexp']))
+			if (isset($tabSettings[self::OPTION_DIR]) && !isset($tabSettings[self::OPTION_REGEXP]))
 			{
-				$fileExists = file_exists($tabSettings['folder']);
+				$fileExists = file_exists($tabSettings[self::OPTION_DIR]);
 				if ($fileExists)
 				{
-					$isDirectory = is_dir($tabSettings['folder']);
+					$isDirectory = is_dir($tabSettings[self::OPTION_DIR]);
 					if (!$isDirectory)
 					{
 						$errors[$tabName][] = 'The path specified is not a directory';						
@@ -164,6 +168,6 @@ class SettingsReader
 
 	protected function isPermittedKey($key)
 	{
-		return in_array($key, array('folder', 'title', 'regexp',));
+		return in_array($key, array(self::OPTION_DIR, self::OPTION_TITLE, self::OPTION_REGEXP, ));
 	}
 }
