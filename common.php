@@ -44,6 +44,59 @@ class SettingsReader
 	}
 
 	/**
+	 * Derive a title based on the pwd and the settings
+	 * 
+	 * @param string $pwd
+	 * @param string $defaultTitle
+	 */
+	public function getTitle($pwd, $defaultTitle)
+	{
+		$title = $defaultTitle;
+		foreach ($this->settings as $tabName => $tabSettings)
+		{
+			if ($this->comparePwd($tabSettings, $pwd))
+			{
+				$title = $this->settings[$tabName]['title'];
+				break;
+			}
+		}
+
+		return $title;
+	}
+
+	/**
+	 * This does the comparison to see if the pwd matches the folder expression
+	 * 
+	 * @param array $tabSettings
+	 * @param string $pwd
+	 * @return boolean
+	 */
+	protected function comparePwd(array $tabSettings, $pwd)
+	{
+		# Get some useful properties for this tab
+		$folder = isset($tabSettings['folder']) ?
+			$tabSettings['folder'] :
+			''
+		;
+		$regexp = isset($tabSettings['regexp']) ?
+			(bool) $tabSettings['regexp'] :
+			false
+		;
+
+		if ($regexp)
+		{
+			# @todo We need to check for regexp validity before using
+			$result = (bool) preg_match($folder, $pwd);
+		}
+		else
+		{
+			$result = $folder == $pwd;
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Return a list of errors
 	 * 
 	 * These errors can only be evaluated once the whole file has been processed
@@ -113,36 +166,4 @@ class SettingsReader
 	{
 		return in_array($key, array('folder', 'title', 'regexp',));
 	}
-}
-
-/**
- * This does the comparison to see if the pwd matches the folder expression
- * 
- * @param array $tabSettings
- * @param string $pwd
- * @return boolean
- */
-function comparePwd(array $tabSettings, $pwd)
-{
-	# Get some useful properties for this tab
-	$folder = isset($tabSettings['folder']) ?
-		$tabSettings['folder'] :
-		''
-	;
-	$regexp = isset($tabSettings['regexp']) ?
-		(bool) $tabSettings['regexp'] :
-		false
-	;
-
-	if ($regexp)
-	{
-		# @todo We need to check for regexp validity before using
-		$result = (bool) preg_match($folder, $pwd);
-	}
-	else
-	{
-		$result = $folder == $pwd;
-	}
-
-	return $result;
 }

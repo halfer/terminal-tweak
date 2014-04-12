@@ -24,25 +24,11 @@ $titles = parse_ini_file(TITLES_INI_PATH);
 $SettingsReader = new TerminalTweak\SettingsReader();
 $settings = $SettingsReader->formatSettings($titles);
 
-// Here's the working dir
-$pwd = $_SERVER['PWD'];
-
-// Now let's use these cleaned settings to set a title based on the PWD
-// @todo This can be factored into SettingsReader too
-$title = DEFAULT_TITLE;
-foreach ($settings as $tabName => $tabSettings)
-{
-	if (TerminalTweak\comparePwd($tabSettings, $pwd))
-	{
-		$title = $settings[$tabName]['title'];
-		break;
-	}
-}
-
 if ($argc == 1)
 {
 	// Now output the title
-	echo "$title";
+	$pwd = $_SERVER['PWD'];
+	echo $SettingsReader->getTitle($pwd, DEFAULT_TITLE);
 }
 else
 {
