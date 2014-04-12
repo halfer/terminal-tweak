@@ -2,14 +2,7 @@
 /**
  * Script to reset terminal titles depending on the PWD
  *
- * The format of the ini file is thus:
- *
- * tabName.folder = (full folder path)
- * tabName.title = (The title you want)
- *
- * Repeat for as many tabs as you want.
- *
- * The string "tabName" has no signficance other than each pair needs a unique name.
+ * See the ini sample file for how to write directory/title entries
  */
 require_once 'common.php';
 

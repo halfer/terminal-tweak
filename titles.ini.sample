@@ -2,17 +2,17 @@
 #
 # Use the format:
 #
-# tabName.folder = (fully qualified folder)
+# tabName.dir = (fully qualified folder)
 # tabName.title = (title name you want)
 #
 # Repeat for as many tabs as you have
 #
 # For regular expressions, set tabName.regexp to 1 or Yes
-# Then wrap the tabName.folder in "", and maybe use # for the regexp delineation
+# Then wrap the tabName.dir in "", and maybe use # for the regexp delineation
 #
-# e.g. home.folder = "#^/home#" means "starts with this path"
+# e.g. home.dir = "#^/home#" means "starts with this path"
 
 
-home.folder = /home/bob
+home.dir = /home/bob
 home.title = Home
 

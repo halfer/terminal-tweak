@@ -1,13 +1,10 @@
 <?php
 
-// @todo Some config check to ensure keys have not been replicated here would be nice
-// @todo Maybe change 'folder' to 'directory'?
-
 namespace TerminalTweak;
 
 class SettingsReader
 {
-	const OPTION_DIR = 'folder';
+	const OPTION_DIR = 'dir';
 	const OPTION_TITLE = 'title';
 	const OPTION_REGEXP = 'regexp';
 
