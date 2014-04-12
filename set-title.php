@@ -7,6 +7,7 @@
 require_once 'common.php';
 
 define('TITLES_INI_PATH', __DIR__ . '/titles.ini');
+# Make the default title an ini setting
 define('DEFAULT_TITLE', 'Not found');
 
 // Let's get the raw ini file
